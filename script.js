@@ -23,13 +23,13 @@ function createProductItemElement({ sku, name, image }) {
   return section;
 }
 //
-function getSkuFromProductItem(thiss) {
-  return thiss;
-}
-
-// function getSkuFromProductItem(item) {
-//   return item.querySelector('span.item__sku').innerText;
+// function getSkuFromProductItem(thiss) {
+//   return thiss;
 // }
+
+function getSkuFromProductItem(item) {
+  return item.querySelector('span.item__sku').innerText;
+}
 
 function cartItemClickListener(event) {
   this.remove();
@@ -45,7 +45,7 @@ function cartDelete() {
   }  
 }
 emptyCart.addEventListener('click', cartDelete);
-
+// fim apaga
 function createCartItemElement({ sku, name, salePrice }) {
   const li = document.createElement('li');
   li.className = 'cart__item';
@@ -65,10 +65,16 @@ function createCartItemElement({ sku, name, salePrice }) {
 // console.log(idItem)
 // });
 //
-async function searchItem() {
+async function searchItem(event) {
+  // Referências: Resolvi com as dicas da mentorias de hoje e ontem, sendo indicado link sobre o event.target. 
+  // console.log('event:', event)
+  // console.log('event.target:', event.target)
+  // console.log('event.target.parentNode', event.target.parentNode)
+  // console.log('event.target.parentElment', event.target.parentElement)
+  const sku = getSkuFromProductItem(event.target.parentNode)
+  console.log(sku)
   const sec = document.querySelector('.cart__items');
-  const data = await fetchItem('MLB1341706310');
- 
+  const data = await fetchItem(sku);
   // console.log(data)
     const i = {
       sku: data.id,
@@ -81,10 +87,10 @@ async function searchItem() {
 async function searchProducts(product) {
   const sec = document.querySelector('.items');
   const data = await fetchProducts(product);
-  // console.log(data)
+  console.log(data)
   data.results.forEach((item) => {
     const i = {
-      sku: item.site_id,
+      sku: item.id,
       name: item.title,
       image: item.thumbnail };
       const produtItem = createProductItemElement(i);
