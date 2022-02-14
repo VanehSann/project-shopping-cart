@@ -71,8 +71,8 @@ async function searchItem(event) {
   // console.log('event.target:', event.target)
   // console.log('event.target.parentNode', event.target.parentNode)
   // console.log('event.target.parentElment', event.target.parentElement)
-  const sku = getSkuFromProductItem(event.target.parentNode)
-  console.log(sku)
+  const sku = getSkuFromProductItem(event.target.parentNode);
+  // console.log(sku)
   const sec = document.querySelector('.cart__items');
   const data = await fetchItem(sku);
   // console.log(data)
@@ -87,7 +87,7 @@ async function searchItem(event) {
 async function searchProducts(product) {
   const sec = document.querySelector('.items');
   const data = await fetchProducts(product);
-  console.log(data)
+  // console.log(data)
   data.results.forEach((item) => {
     const i = {
       sku: item.id,
