@@ -70,19 +70,22 @@ async function searchItem(event) {
 async function searchProducts(product) {
   const sec = document.querySelector('.items');
   const data = await fetchProducts(product);
-  // console.log(data)
   data.results.forEach((item) => {
-    const i = {
-      sku: item.id,
-      name: item.title,
-      image: item.thumbnail };
-      const produtItem = createProductItemElement(i);
-      sec.appendChild(produtItem);
+    const i = { sku: item.id, name: item.title, image: item.thumbnail };
+    const produtItem = createProductItemElement(i);
+    sec.appendChild(produtItem);
+    const loading = document.createElement('div');
+    loading.className = 'loading';
+    loading.innerText = 'Carregando..';
+    setTimeout(() => {
+        loading.remove();
+      }, 3000);
+    produtItem.appendChild(loading);
     });
     const buttonCart = document.querySelectorAll('.item__add');
     buttonCart.forEach((button) => {
       button.addEventListener('click', searchItem);
-    });   
+    });
   }
  //
  
