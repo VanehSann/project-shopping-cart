@@ -23,14 +23,10 @@ function createProductItemElement({ sku, name, image }) {
   return section;
 }
 //
-// function getSkuFromProductItem(thiss) {
-//   return thiss;
-// }
-
 function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
 }
-
+//
 function cartItemClickListener(event) {
   this.remove();
 }
@@ -43,6 +39,7 @@ function cartDelete() {
       o.remove();
     });
   }  
+  // saveCartItems(this)
 }
 emptyCart.addEventListener('click', cartDelete);
 // fim apaga
@@ -54,23 +51,8 @@ function createCartItemElement({ sku, name, salePrice }) {
   return li;
 }
 //
-// const buttonCart = document.querySelectorAll('.item__add');
-// const data = fetchProducts('computador');
-// const buttonCart = document.querySelectorAll('.item__add');
-// // console.log(buttonCart)
-// buttonCart.forEach((button) => { 
-// button.onclick = function teste() {
-//   const idItem = getSkuFromProductItem(this);
-// };
-// console.log(idItem)
-// });
-//
 async function searchItem(event) {
   // Referências: Resolvi com as dicas da mentorias de hoje e ontem, sendo indicado link sobre o event.target. 
-  // console.log('event:', event)
-  // console.log('event.target:', event.target)
-  // console.log('event.target.parentNode', event.target.parentNode)
-  // console.log('event.target.parentElment', event.target.parentElement)
   const sku = getSkuFromProductItem(event.target.parentNode);
   // console.log(sku)
   const sec = document.querySelector('.cart__items');
@@ -82,6 +64,7 @@ async function searchItem(event) {
       salePrice: data.price };
       const produtItem = createCartItemElement(i);
       sec.appendChild(produtItem);
+      // saveCartItems(this)
   }
 //
 async function searchProducts(product) {
@@ -99,10 +82,10 @@ async function searchProducts(product) {
     const buttonCart = document.querySelectorAll('.item__add');
     buttonCart.forEach((button) => {
       button.addEventListener('click', searchItem);
-    }); 
+    });   
   }
-
+ //
+ 
 window.onload = () => {
  searchProducts('computador');
-// searchItem()
  };
