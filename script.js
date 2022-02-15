@@ -26,9 +26,11 @@ function createProductItemElement({ sku, name, image }) {
 function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
 }
-//
+const sec = document.querySelector('.cart__items');
 function cartItemClickListener(event) {
-  this.remove();
+  event.target.remove();
+  saveCartItems(sec.innerHTML);
+  // console.log(localStorage)
 }
 // apaga
 const emptyCart = document.querySelector('.empty-cart');
@@ -38,9 +40,10 @@ function cartDelete() {
     ol.forEach((o) => {
       o.remove();
     });
-  }  
-  // saveCartItems(this)
+    localStorage.clear();
+  }
 }
+// https://stackoverflow.com/questions/58789424/localstorage-is-saving-html-as-object-htmldivelement
 emptyCart.addEventListener('click', cartDelete);
 // fim apaga
 function createCartItemElement({ sku, name, salePrice }) {
@@ -51,29 +54,35 @@ function createCartItemElement({ sku, name, salePrice }) {
   return li;
 }
 //
+function getPriceFromProductItem(item) {
+  return item.querySelector('span.i.salePrice').innerText;
+}
+//
 async function searchItem(event) {
   // Referências: Resolvi com as dicas da mentorias de hoje e ontem, sendo indicado link sobre o event.target. 
   const sku = getSkuFromProductItem(event.target.parentNode);
   // console.log(sku)
-  const sec = document.querySelector('.cart__items');
+  // const sec = document.querySelector('.cart__items');
   const data = await fetchItem(sku);
   // console.log(data)
-    const i = {
-      sku: data.id,
-      name: data.title,
-      salePrice: data.price };
-      const produtItem = createCartItemElement(i);
-      sec.appendChild(produtItem);
-      // saveCartItems(this)
+  const i = {
+    sku: data.id,
+    name: data.title,
+    salePrice: data.price };
+    const produtItem = createCartItemElement(i);
+    sec.appendChild(produtItem);
+    saveCartItems(sec.innerHTML);
   }
+  const li = document.querySelectorAll('.cart__item');
+console.log(li);
 //
 async function searchProducts(product) {
-  const sec = document.querySelector('.items');
+  const secI = document.querySelector('.items');
   const data = await fetchProducts(product);
   data.results.forEach((item) => {
     const i = { sku: item.id, name: item.title, image: item.thumbnail };
     const produtItem = createProductItemElement(i);
-    sec.appendChild(produtItem);
+    secI.appendChild(produtItem);
     const loading = document.createElement('div');
     loading.className = 'loading';
     loading.innerText = 'Carregando..';
@@ -87,8 +96,11 @@ async function searchProducts(product) {
       button.addEventListener('click', searchItem);
     });
   }
- //
- 
+//
 window.onload = () => {
  searchProducts('computador');
+ sec.innerHTML = getSavedCartItems();
+ sec.addEventListener('click', cartItemClickListener);
+
+ //
  };
